@@ -1,3 +1,3 @@
 # Using Github Actions with Faculty
 
-_Experimental_.
+_Work in progress._
