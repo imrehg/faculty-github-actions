@@ -14,7 +14,6 @@ jobs:
     name: Trigger Job on Self-hosted Runner
     runs-on: self-hosted
     env:
-      FACULTY_PROJECT_ID: ${{ secrets.FACULTY_PROJECT_ID }}
       FACULTY_JOB_NAME: ${{ secrets.FACULTY_JOB_NAME }}
     steps:
       - uses: actions/checkout@v2
@@ -25,4 +24,4 @@ jobs:
         run: |
           pip install -r workflow/workflow_requirements.txt
       - name: Run a job
-        run: python3 workflow/jobrun.py
+        run: python workflow/jobrun.py
