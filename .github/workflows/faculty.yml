@@ -1,20 +1,27 @@
-name: Greet Everyone
-# This workflow is triggered on pushes to the repository.
-on: [push]
+name: Faculty
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the master branch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  build:
-    # Job name is Greeting
-    name: Greeting
-    # This job runs on Linux
-    runs-on: ubuntu-latest
+  jobrun-selfhosted:
+    name: Trigger Job on Self-hosted Runner
+    runs-on: self-hosted
+    env:
+      FACULTY_JOB_NAME: ${{ secrets.FACULTY_JOB_NAME }}
     steps:
-      # This step uses GitHub's hello-world-javascript-action: https://github.com/actions/hello-world-javascript-action
-      - name: Hello world
-        uses: actions/hello-world-javascript-action@v1
-        with:
-          who-to-greet: 'Mona the Octocat'
-        id: hello
-      # This step prints an output (time) from the previous step's action.
-      - name: Echo the greeting's time
-        run: echo 'The time was ${{ steps.hello.outputs.time }}.'
+      - uses: actions/checkout@v2
+      # We should already have python/pip/... installed
+      - name: Python version
+        run: python -V
+      - name: Install any workflow requirements
+        run: |
+          pip install -r workflow/workflow_requirements.txt
+      - name: Run a job
+        run: python workflow/jobrun.py
